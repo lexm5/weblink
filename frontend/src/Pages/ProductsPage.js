@@ -2,34 +2,46 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { Button, Typography } from '@mui/material';
+import '../styles/ProductsPage.css'; // CSSファイルをインポート
 
 function ProductsPage() {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([]); // スペル修正
 
     useEffect(() => {
         axios.get('/api/products')
-            .then(response => {
+            .then((response) => {
                 const data = response.data;
-                // productsが配列であることを確認し、そうでない場合は空の配列にする
                 setProducts(Array.isArray(data) ? data : []);
             })
-            .catch(error => {
-                console.error("商品一覧の取得エラー:", error);
-                setProducts([]); // エラー時も空の配列をセットしてエラーを防ぐ
+            .catch((error) => {
+                console.error('商品一覧の取得エラー:', error);
+                setProducts([]); // エラー時に空の配列をセット
             });
     }, []);
 
     return (
-        <div>
-            <h1>商品一覧</h1>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className="products-container">
+            <Typography className="products-title" variant="h4">商品一覧</Typography>
+            <div className="products-grid">
                 {products.map((product) => (
-                    <div key={product._id} style={{ border: '1px solid #ddd', padding: '16px', margin: '8px', width: '200px' }}>
-                        <img src={product.imageUrl} alt={product.name} style={{ width: '100%' }} />
-                            <Link to={`/products/${product._id}`}>{product.name}</Link>
-                        <p>{product.description}</p>
-                        <p>価格: ¥{product.price}</p>
-                        <p>在庫: {product.stock}</p>
+                    <div key={product.id} className="product-card"> {/* 修正：product._id → product.id */}
+                        <img src={product.imageUrl} alt={product.name} className="product-image" />
+                        <div className="product-content">
+                            <Link to={`/products/${product.id}`} className="product-name">{product.name}</Link>
+                            <Typography className="product-description">{product.description}</Typography>
+                            <Typography className="product-price">価格: ¥{product.price}</Typography>
+                            <Typography className="product-stock">在庫: {product.stock}</Typography>
+                        </div>
+                        <Button
+                            component={Link}
+                            to={`/products/${product.id}`}
+                            variant="contained"
+                            color="primary"
+                            className="product-button"
+                        >
+                            詳細を見る
+                        </Button>
                     </div>
                 ))}
             </div>
