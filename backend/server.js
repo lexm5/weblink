@@ -1,13 +1,19 @@
+// backend/server.js
 const express = require('express');
-const connectDB = require('./DB'); // MongoDB接続設定
+const connectDB = require('./DB');
+const productRoutes = require('./routes/productRoutes'); // ルートをインポート
+require('dotenv').config();
 
 const app = express();
-connectDB(); // MongoDBに接続
+const PORT = process.env.PORT || 5000;
+
+connectDB();
 
 app.use(express.json());
 
-// ルートやAPIエンドポイントの設定など...
+// /api/products ルートの設定
+app.use('/api/products', productRoutes);
 
-app.listen(5000, () => {
-    console.log("サーバーがポート5000で起動しました！");
+app.listen(PORT, () => {
+    console.log(`サーバーがポート${PORT}で起動しました！`);
 });
