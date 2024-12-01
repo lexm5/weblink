@@ -5,7 +5,8 @@ import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
 import DetailPage from './pages/DetailPage';
 import CartPage from './pages/CartPage';
-
+import RegisterPage from './pages/LoginPage'
+import LoginPage from './pages/RegisterPage';
 function App() {
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
@@ -42,7 +43,8 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/products" element={<ProductsPage />} />
                 <Route path="/products/:id" element={<DetailPage addToCart={addToCart} />} />
-                <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />} />
+                <Route path="/login" element={<LoginPage />} /> {/* 修正: LoginPageを追加 */}
+                <Route path="/register" element={<RegisterPage />} /> {/* 修正: RegisterPageを追加 */}
             </Routes>
         </Router>
     );
